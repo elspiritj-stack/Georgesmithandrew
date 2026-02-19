@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rollercoaster Wallet</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f0f0f;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:350px;
+    background:#1a1a1a;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,255,100,0.3);
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border:none;
+    border-radius:8px;
+    background:#32ff7e;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.balance{
+    font-size:28px;
+    color:#32ff7e;
+    text-align:center;
+    margin:20px 0;
+}
+
+.red{
+    background:#ff4d4d;
+    color:white;
+    padding:10px;
+    border-radius:6px;
+    margin-top:15px;
+    text-align:center;
+}
+
+.hidden{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="loginPage">
+    <h2>Login</h2>
+    <input type="text" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<div class="container hidden" id="dashboardPage">
+    <h2>Dashboard</h2>
+    <div class="balance" id="balance">$0.00</div>
+
+    <button onclick="showApple()">Apple Card</button>
+    <button onclick="showWithdraw()">Withdraw</button>
+</div>
+
+<div class="container hidden" id="applePage">
+    <h2>Redeem Apple Card</h2>
+    <input type="text" id="appleCode" maxlength="16" placeholder="Enter 16-digit code">
+    <button onclick="redeem()">Submit</button>
+    <button onclick="goHome()">Home</button>
+</div>
+
+<div class="container hidden" id="withdrawPage">
+    <h2>Withdraw</h2>
+    <input type="text" placeholder="Cash App Tag">
+    <input type="number" id="withdrawAmount" placeholder="Amount">
+    <button onclick="withdraw()">Send</button>
+    <div id="withdrawMessage"></div>
+    <button onclick="goHome()">Home</button>
+</div>
+
+<script>
+let balance = 0;
+
+function login(){
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+function showApple(){
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("applePage").classList.remove("hidden");
+}
+
+function showWithdraw(){
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("withdrawPage").classList.remove("hidden");
+}
+
+function redeem(){
+    let code = document.getElementById("appleCode").value;
+
+    if(code.length === 16){
+        alert("Processing...");
+        setTimeout(()=>{
+            balance = 100;
+            document.getElementById("balance").innerText = "$100.00";
+            alert("Successful! Balance updated to $100");
+            goHome();
+        },1000);
+    } else {
+        alert("Invalid 16 digit code");
+    }
+}
+
+function withdraw(){
+    let amount = parseInt(document.getElementById("withdrawAmount").value);
+    let message = document.getElementById("withdrawMessage");
+
+    if(amount < 200){
+        message.innerHTML = "Transfer Failed! Minimum withdrawal is $200";
+        message.className = "red";
+    } else {
+        message.innerHTML = "Processing...";
+        message.className = "";
+    }
+}
+
+function goHome(){
+    document.getElementById("applePage").classList.add("hidden");
+    document.getElementById("withdrawPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
